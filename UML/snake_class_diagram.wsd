@@ -1,0 +1,40 @@
+@startuml
+
+title 静态类图
+skinparam defaultFontName 宋体
+
+class Snake {
+    array position
+    Int length
+    - addLength()
+}
+
+class Control {
+    + trunLeft()
+    + trunRight()
+    + trunTop()
+    + trunDown()
+}
+
+class Map {
+    Int width
+    Int height
+    Int speed
+    - startGame()
+    - endGame()
+}
+
+class Food {
+    Int positionX
+    Int positionY
+    - updatePosition()
+}
+
+Snake --> Food
+Snake *--> Map
+Food *--> Map
+Control ..> Map
+Snake ..|> Control
+
+
+@enduml
