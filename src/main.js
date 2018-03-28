@@ -1,10 +1,33 @@
 window.onload = function() {
-    let startGame, snake, food;
+    let gameTimer, map, snake, food;
     let canvas = document.getElementById('map');
     let context = canvas.getContext('2d');
-    context.fillStyle = '#000';
-    context.fillRect(0, 0, canvas.width, canvas.height);
 
+    //map
+    class Map {
+        initMap() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.fillStyle = '#000';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            snake = new Snake();
+            snake.draw();
+            food = new Food().getRandomFood();
+            food.draw();
+        }
+        startGame() {
+            gameTimer = setInterval(function() {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                context.fillStyle = '#000';
+                context.fillRect(0, 0, canvas.width, canvas.height);
+                food.draw();
+                snake.move();
+                snake.draw();
+            }, 300);
+        }
+        endGame() {
+            clearInterval(gameTimer);
+        }
+    }
 
     //基本矩形类
     class Rect {
@@ -66,7 +89,6 @@ window.onload = function() {
             this.head = snakeArray[0];
             this.snakeArray = snakeArray;
             this.direction = 39;
-            console.log(this.snakeArray);
         }
         draw() {
             for (let i = 0; i < this.snakeArray.length; i++) {
@@ -101,14 +123,14 @@ window.onload = function() {
             }
 
             if (this.head.x > canvas.width || this.head.x < 0 || this.head.y > canvas.height || this.head.y < 0) {
-                clearInterval(startGame);
+                clearInterval(gameTimer);
                 alert("你失败了，撞墙了");
             }
 
             // 撞自己，循环从1开始，避开蛇头与蛇头比较的情况
             for (let i = 1; i < this.snakeArray.length; i++) {
                 if (this.snakeArray[i].x == this.head.x && this.snakeArray[i].y == this.head.y) {
-                    clearInterval(startGame);
+                    clearInterval(gameTimer);
                     alert("你失败了，吃自己了");
                 }
             }
@@ -122,11 +144,6 @@ window.onload = function() {
             }
         }
     }
-
-    snake = new Snake();
-    snake.draw();
-    food = new Food().getRandomFood();
-    food.draw();
 
     //监听键盘事件，改变蛇的方向
     window.onkeydown = function(e) {
@@ -166,14 +183,23 @@ window.onload = function() {
 
     let startBtn = document.getElementById('startBtn');
     startBtn.onclick = function() {
-        //定时器
-        startGame = setInterval(function() {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            context.fillStyle = '#000';
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            food.draw();
-            snake.move();
-            snake.draw();
-        }, 300);
+        if (startBtn.innerText == '开始游戏') {
+            startBtn.innerText = '重新开始';
+            map.startGame();
+        } else {
+            map.endGame();
+            map.initMap();
+            map.startGame();
+        }
     }
+
+    let stopBtn = document.getElementById('stopBtn');
+    stopBtn.onclick = function() {
+        map.endGame();
+        map.initMap();
+        startBtn.innerText = '开始游戏';
+    }
+
+    map = new Map();
+    map.initMap();
 }

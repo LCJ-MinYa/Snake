@@ -20,13 +20,19 @@
             height: 600px;
             margin:30px auto 30px;
         }
-        #startBtn{
+        .btnBox{
+            display: flex;
+            display: -webkit-flex;
+            width: 600px;
+            justify-content: space-around;
+            margin:0 auto 20px;
+        }
+        #startBtn, #stopBtn{
             padding: 10px 20px;
             background: #666;
             border-radius: 5px;
             color: #fff;
             display: block;
-            margin:0 auto 20px;
             cursor: pointer;
         }
     </style>
@@ -34,7 +40,10 @@
 <body>
     <div id="app">
         <canvas id="map" width="600" height="600"></canvas>
-        <button id="startBtn">开始</button>
+        <div class="btnBox">
+            <button id="startBtn">开始游戏</button>
+            <button id="stopBtn">停止游戏</button>
+        </div>
     </div>
 </body>
 </html>
