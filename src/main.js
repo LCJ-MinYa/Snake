@@ -1,4 +1,5 @@
 window.onload = function() {
+    let startGame, snake, food;
     let canvas = document.getElementById('map');
     let context = canvas.getContext('2d');
     context.fillStyle = '#000';
@@ -23,25 +24,156 @@ window.onload = function() {
         }
     }
 
+    //食物
+    class Food {
+        getRandomFood() {
+            let rect;
+            let isOnSnake = true;
+
+            while (isOnSnake) {
+                isOnSnake = false;
+                let indexX = this.getNumberInRange(0, canvas.width / 20 - 1);
+                let indexY = this.getNumberInRange(0, canvas.height / 20 - 1);
+                rect = new Rect(indexX * 20, indexY * 20, 20, 20, "green");
+
+                for (let i = 0; i < snake.snakeArray.length; i++) {
+                    if (snake.snakeArray[i].x == rect.x && snake.snakeArray[i].y == rect.y) {
+                        isOnSnake = true;
+                        break;
+                    }
+                }
+            }
+
+            return rect;
+        }
+        getNumberInRange(min, max) {
+            let range = max - min;
+            let r = Math.random();
+            return Math.round(r * range + min);
+        }
+    }
+
     //Snake类
     class Snake {
         constructor() {
             let snakeArray = [];
 
             for (let i = 0; i < 5; i++) {
-                let rect = new Rect(i * 20 + 200, 290, 20, 20, "#fff");
+                let rect = new Rect(i * 20 + 200, 280, 20, 20, "#fff");
                 snakeArray.splice(0, 0, rect);
             }
 
+            this.head = snakeArray[0];
             this.snakeArray = snakeArray;
+            this.direction = 39;
+            console.log(this.snakeArray);
         }
         draw() {
             for (let i = 0; i < this.snakeArray.length; i++) {
                 this.snakeArray[i].draw();
             }
         }
+        move() {
+            let rect = new Rect(this.head.x, this.head.y, this.head.width, this.head.height, "#fff");
+            this.snakeArray.splice(1, 0, rect);
+
+            if (this.isEat()) {
+                food = new Food().getRandomFood();
+            } else {
+                this.snakeArray.pop();
+            }
+
+            switch (this.direction) {
+                case 37:
+                    this.head.x -= this.head.width;
+                    break;
+                case 38:
+                    this.head.y -= this.head.height;
+                    break;
+                case 39:
+                    this.head.x += this.head.width;
+                    break;
+                case 40:
+                    this.head.y += this.head.height;
+                    break;
+                default:
+                    break;
+            }
+
+            if (this.head.x > canvas.width || this.head.x < 0 || this.head.y > canvas.height || this.head.y < 0) {
+                clearInterval(startGame);
+                alert("你失败了，撞墙了");
+            }
+
+            // 撞自己，循环从1开始，避开蛇头与蛇头比较的情况
+            for (let i = 1; i < this.snakeArray.length; i++) {
+                if (this.snakeArray[i].x == this.head.x && this.snakeArray[i].y == this.head.y) {
+                    clearInterval(startGame);
+                    alert("你失败了，吃自己了");
+                }
+            }
+
+        }
+        isEat() {
+            if (this.head.x == food.x && this.head.y == food.y) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
-    let snake = new Snake();
+    snake = new Snake();
     snake.draw();
+    food = new Food().getRandomFood();
+    food.draw();
+
+    //监听键盘事件，改变蛇的方向
+    window.onkeydown = function(e) {
+        let ev = e || window.event;
+        switch (ev.keyCode) {
+            case 37:
+                {
+                    if (snake.direction !== 39) {
+                        snake.direction = 37;
+                    }
+                    break;
+                }
+            case 38:
+                {
+                    if (snake.direction !== 40) {
+                        snake.direction = 38;
+                    }
+                    break;
+                }
+            case 39:
+                {
+                    if (snake.direction !== 37) {
+                        snake.direction = 39;
+                    }
+                    break;
+                }
+            case 40:
+                {
+                    if (snake.direction !== 38) {
+                        snake.direction = 40;
+                    }
+                    break;
+                }
+        }
+        ev.preventDefault();
+    }
+
+    let startBtn = document.getElementById('startBtn');
+    startBtn.onclick = function() {
+        //定时器
+        startGame = setInterval(function() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.fillStyle = '#000';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            food.draw();
+            snake.move();
+            snake.draw();
+        }, 300);
+    }
 }
