@@ -22,7 +22,7 @@ window.onload = function() {
                 food.draw();
                 snake.move();
                 snake.draw();
-            }, 300);
+            }, 200);
         }
         endGame() {
             clearInterval(gameTimer);
