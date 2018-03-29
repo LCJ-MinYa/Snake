@@ -6,7 +6,8 @@ skinparam defaultFontName 宋体
 class Snake {
     array position
     Int length
-    - addLength()
+    + draw()
+    + move()
 }
 
 class Control {
@@ -20,14 +21,15 @@ class Map {
     Int width
     Int height
     Int speed
-    - startGame()
-    - endGame()
+    + startGame()
+    + endGame()
+    + initMap()
 }
 
 class Food {
     Int positionX
     Int positionY
-    - updatePosition()
+    + getRandomFood()
 }
 
 Snake --> Food

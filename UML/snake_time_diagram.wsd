@@ -13,5 +13,5 @@ Snake -> Food : 蛇吃到食物，增加体型
 Food -> Map : 刷新新的食物位置
 
 == 结束游戏 ==
-Map -> Map : 成功或者失败结束游戏
+Snake -> Map : 成功或者失败结束游戏
 @enduml
