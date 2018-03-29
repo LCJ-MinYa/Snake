@@ -1,5 +1,5 @@
 window.onload = function() {
-    let gameTimer, map, snake, food;
+    let gameTimer, map, snake, food, onKeyDownTime;
     let canvas = document.getElementById('map');
     let context = canvas.getContext('2d');
 
@@ -22,7 +22,7 @@ window.onload = function() {
                 food.draw();
                 snake.move();
                 snake.draw();
-            }, 200);
+            }, 300);
         }
         endGame() {
             clearInterval(gameTimer);
@@ -105,6 +105,7 @@ window.onload = function() {
                 this.snakeArray.pop();
             }
 
+            //37 左，38 上，39 右，40 下
             switch (this.direction) {
                 case 37:
                     this.head.x -= this.head.width;
@@ -147,7 +148,18 @@ window.onload = function() {
 
     //监听键盘事件，改变蛇的方向
     window.onkeydown = function(e) {
+        if (onKeyDownTime) {
+            let nowDate = new Date().valueOf();
+            if (nowDate - onKeyDownTime < 200) {
+                return;
+            } else {
+                onKeyDownTime = nowDate;
+            }
+        } else {
+            onKeyDownTime = new Date().valueOf();
+        }
         let ev = e || window.event;
+        //37 左，38 上，39 右，40 下
         switch (ev.keyCode) {
             case 37:
                 {
