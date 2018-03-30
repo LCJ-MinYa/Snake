@@ -33,8 +33,8 @@ class Food {
 }
 
 Snake --> Food
-Snake *--> Map
-Food *--> Map
+Map *--> Snake
+Map *--> Food
 Control ..> Map
 Snake ..|> Control
 

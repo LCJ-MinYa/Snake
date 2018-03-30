@@ -5,6 +5,12 @@ skinparam defaultFontName 宋体
 
 [*] --> initMap : 初始化地图
 
+note left
+    尝试左右时序图
+    游戏触发条件
+    加上loop循环的时序
+end note
+
 state initMap{
     Map : 地图初始化大小，背景颜色
     Snake : Snake位置，长度，颜色
