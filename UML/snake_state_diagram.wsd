@@ -1,28 +1,28 @@
 @startuml
 
-title 状态图
+title 状态 图
 skinparam defaultFontName 宋体
 
-[*] --> initMap : 初始化地图
+[*] --> initMap : 初始化地图
 
 state initMap{
-    Map : 地图初始化大小，背景颜色
-    Snake : Snake位置，长度，颜色
-    Food : 位置，颜色
+    Map : 地图初始化大小，背景颜色
+    Snake : Snake位置，长度，颜色
+    Food : 位置，颜色
 }
 
 initMap --> startGame : 开始游戏
-initMap --> startGame : 重新开始
+initMap --> startGame : 重新开始
 
 state startGame{
     Map : 刷新地图
     Snake : 蛇的移动和刷新
-    Food : 是否需要刷新
+    Food : 是否需要刷新
 }
 
-startGame --> control : 键盘控制
-startGame --> time : 时间执行蛇移动
-startGame --> endGame : 停止游戏按钮
+startGame --> control : 键盘控制
+startGame --> time : 时间执行蛇移动
+startGame --> endGame : 停止游戏按钮
 
 state control{
     trunLeft : 左
@@ -40,10 +40,10 @@ time --> endGame
 
 state endGame{
     against_the_wall : 撞墙
-    against_the_self : 撞自己
-    win : 胜利
+    against_the_self : 撞自己
+    win : 胜利
 }
 
-endGame --> initMap : 重新初始化地图
+endGame --> initMap : 重新初始化地图
 
 @enduml

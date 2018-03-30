@@ -1,17 +1,17 @@
 @startuml
 
-title 时序图
+title 时序图
 skinparam defaultFontName 宋体
 
 == 游戏初始化 ==
 Map -> Map : 初始化地图属性
-Snake -> Map : 基于地图初始化蛇的位置
-Food -> Map : 基于地图初始化食物位置
+Snake -> Map : 基于地图初始化蛇的位置
+Food -> Map : 基于地图初始化食物位置
 
-== 开始游戏 ==
+== 开始游戏 ==
 Snake -> Food : 蛇吃到食物，增加体型
-Food -> Map : 刷新新的食物位置
+Food -> Map : 刷新新的食物位置
 
 == 结束游戏 ==
-Snake -> Map : 成功或者失败结束游戏
+Snake -> Map : 成功或者失败结束游戏
 @enduml
